@@ -6,18 +6,18 @@ namespace NETLab4.ExpressionEditors
 {
     public static class ExpressionParser    //??? норм шо паблік а не інтернал?
     {
-        private static bool part_recording; 
+        private static bool partRecording; 
         private static Component? currentNode; // ??? camel norm
-        private static string? part_value;  // ??? а шо робить з '?'
+        private static string? partValue;  // ??? а шо робить з '?'
         private static Component? lastNode;
 
         public static Component Parse(string exp)
         {
             var root = new Composite();
            
-            part_value = String.Empty;
+            partValue = String.Empty;
             currentNode = root;
-            part_recording = false;
+            partRecording = false;
 
             foreach (char s in exp)
             {
@@ -46,17 +46,17 @@ namespace NETLab4.ExpressionEditors
                     case '/':
                     case '+':
                     case '-':
-                        if(part_recording) 
+                        if(partRecording) 
                             RecordValueAndCreateLeaf();
                         currentNode.Connector = new Connect(s);
                         break;
                     default:
-                        part_recording = true; // ??? чи делегат чи подія
-                        part_value += s;
+                        partRecording = true; // ??? чи делегат чи подія
+                        partValue += s;
                         break;
                 }
             }
-            if(part_value != null) 
+            if(partValue != null) 
                 RecordValueAndCreateLeaf();
 
             return currentNode;
@@ -91,13 +91,13 @@ namespace NETLab4.ExpressionEditors
         {
             if (part_recording)
             {
-                if (currentNode == null || part_value == null)
+                if (currentNode == null || partValue == null)
                     throw new NullReferenceException("Recording was not run or current node was not selected");
                 if (currentNode.Left == null)
-                    currentNode.Left = new Leaf(PartRecord(part_value));    // ??? delegate
+                    currentNode.Left = new Leaf(PartRecord(partValue));    // ??? delegate
                 else
-                    currentNode.Right = new Leaf(PartRecord(part_value));     // ??? same 
-                part_value = String.Empty;
+                    currentNode.Right = new Leaf(PartRecord(partValue));     // ??? same 
+                partValue = String.Empty;
                 part_recording = false;
             }
         }
