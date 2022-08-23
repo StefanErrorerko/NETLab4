@@ -51,7 +51,7 @@ namespace NETLab4.ExpressionEditors
                         currentNode.Connector = new Connect(s);
                         break;
                     default:
-                        partRecording = true; // ??? чи делегат чи подія
+                        partRecording = true; 
                         partValue += s;
                         break;
                 }
@@ -62,23 +62,23 @@ namespace NETLab4.ExpressionEditors
             return currentNode;
         }
 
-        private static SimpleExpression PartRecord(string raw_part)
+        private static SimpleExpression PartRecord(string rawPart)
         {
-            if (IsNumber(raw_part)) return new Number(Convert.ToDouble(raw_part));
-            else if (IsVariable(raw_part)) return new Variable(raw_part);
+            if (IsNumber(rawPart)) return new Number(Convert.ToDouble(rawPart));
+            else if (IsVariable(rawPart)) return new Variable(rawPart);
             else throw new InvalidDataException();
         }
 
-        private static bool IsVariable(string raw_part)
+        private static bool IsVariable(string rawPart)
         {
-            return Regex.IsMatch(raw_part, @"^[A-z,a-z]+$");        // ??? чи норм? розширювати Стрінг? але це крінж чи у Variable
+            return Regex.IsMatch(rawPart, @"^[A-z,a-z]+$");        // ??? чи норм? розширювати Стрінг? але це крінж чи у Variable
         }
 
-        private static bool IsNumber(string raw_part)
+        private static bool IsNumber(string rawPart)
         {
             try
             {
-                Convert.ToDouble(raw_part);
+                Convert.ToDouble(rawPart);
                 return true;
             }
             catch
