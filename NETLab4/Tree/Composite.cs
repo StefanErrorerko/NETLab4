@@ -19,12 +19,12 @@ namespace NETLab4.Tree
             Connector = connector;
         }
 
-        public override string Expression()
+        public override string ToString()
         {
             string result = "(";
-            result += Left.Expression();
+            result += Left.ToString();
             result += Connector;
-            result += Right.Expression();
+            result += Right.ToString();
             return result + ")";
         }
     }
