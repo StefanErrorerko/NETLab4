@@ -1,4 +1,4 @@
-﻿using NETLab4.Parts;
+﻿using NETLab4.SimpleExpressions;
 
 namespace NETLab4.Tree
 {
