@@ -89,7 +89,7 @@ namespace NETLab4.ExpressionEditors
 
         private static void RecordValueAndCreateLeaf()      // handle? how
         {
-            if (part_recording)
+            if (partRecording)
             {
                 if (currentNode == null || partValue == null)
                     throw new NullReferenceException("Recording was not run or current node was not selected");
@@ -98,7 +98,7 @@ namespace NETLab4.ExpressionEditors
                 else
                     currentNode.Right = new Leaf(PartRecord(partValue));     // ??? same 
                 partValue = String.Empty;
-                part_recording = false;
+                partRecording = false;
             }
         }
     }
