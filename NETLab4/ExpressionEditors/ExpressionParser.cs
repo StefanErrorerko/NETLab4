@@ -87,16 +87,16 @@ namespace NETLab4.ExpressionEditors
             }
         }
 
-        private static void RecordValueAndCreateLeaf()      // handle? how
+        private static void RecordValueAndCreateLeaf()      
         {
             if (partRecording)
             {
                 if (currentNode == null || partValue == null)
                     throw new ArgumentNullException("Recording was not run or current node was not selected");
                 if (currentNode.Left == null)
-                    currentNode.Left = new Leaf(PartRecord(partValue));    // ??? delegate
+                    currentNode.Left = new Leaf(PartRecord(partValue));  
                 else
-                    currentNode.Right = new Leaf(PartRecord(partValue));     // ??? same 
+                    currentNode.Right = new Leaf(PartRecord(partValue));    
                 partValue = String.Empty;
                 partRecording = false;
             }
