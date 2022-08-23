@@ -92,7 +92,7 @@ namespace NETLab4.ExpressionEditors
             if (partRecording)
             {
                 if (currentNode == null || partValue == null)
-                    throw new NullReferenceException("Recording was not run or current node was not selected");
+                    throw new ArgumentNullException("Recording was not run or current node was not selected");
                 if (currentNode.Left == null)
                     currentNode.Left = new Leaf(PartRecord(partValue));    // ??? delegate
                 else
