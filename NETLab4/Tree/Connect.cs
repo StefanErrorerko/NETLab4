@@ -1,8 +1,8 @@
-﻿namespace NETLab4.Tree
+namespace NETLab4.Tree
 {
     public class Connect
     {
-        private static List<char> _symbolCollection = new List<char>
+        private static readonly List<char> _symbolCollection = new List<char>
         {
             '+', '-', '*', '/'
         };
