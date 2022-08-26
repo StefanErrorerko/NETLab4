@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NETLab4.SimpleExpressions;
 
 namespace NETLab4.Tree
@@ -16,7 +12,7 @@ namespace NETLab4.Tree
 
         public override string ToString()
         {
-            if(Value != null) return Value.ToString();
+            if (Value != null) return Value.ToString();
             return String.Empty;
         }
     }
