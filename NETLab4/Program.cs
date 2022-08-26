@@ -1,6 +1,5 @@
-using System;
-using NETLab4.ExpressionEditors;
-using NETLab4.SimpleExpressions;
+using NETLab4.Extensions;
+using NETLab4.Parsers;
 using NETLab4.Tree;
 
 namespace NETLab4
@@ -17,12 +16,13 @@ namespace NETLab4
                     "\tскладний вираз = (<вираз><знак операцiї><вираз>)\n" +
                     "Наприклад: ((62+3)/(8,45*7))-4");
                 string? exp = Console.ReadLine();
-                Console.WriteLine("Розбирається задане дерево парсером виразiв. Готово:");
 
                 if (!String.IsNullOrEmpty(exp))
                 {
-                    var root = ExpressionParser.Parse(exp);
-                    Console.WriteLine(ExpressionDisplayer.Display(root));
+                    Console.WriteLine("Розбирається задане дерево парсером виразiв. Готово:");
+                    IParser parserAlfred = new ParserAlfred();
+                    var root = parserAlfred.Parse(exp);
+                    Console.WriteLine(root.ToString().TrimBrackets());
                 }
             }
             catch(Exception ex)
