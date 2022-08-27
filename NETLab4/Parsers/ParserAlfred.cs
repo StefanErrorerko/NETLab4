@@ -5,16 +5,18 @@ namespace NETLab4.Parsers
 {
     public class ParserAlfred : IParser
     {
-        bool partRecording;
-        Component? currentNode;
-        string partValue = string.Empty;
-        Component? lastNode;
+        bool partRecording; //_partRecording and make all this fields private explicitly
+        Component? currentNode; //_currentNode - '_' part is a code style convention https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+        string partValue = string.Empty; //same
+        Component? lastNode; // same and Component var doesn't need '?' because Component is a class, so it is reference type, so it is already nullable
         public override Component Parse(string exp)
         {
+            // root var not needed, it could already be currentNode = new Composite();
             var root = new Composite();
             currentNode = root;
-            partRecording = false;
+            partRecording = false; //this flag actually should not be private var, it should be local var here in Parse() method and be a parameter in RecordValueAndCreateLeaf() method
 
+            //var s, and you should avoid var naming in one letter (is it symbol?)
             foreach (char s in exp)
             {
                 switch (s)
@@ -35,6 +37,7 @@ namespace NETLab4.Parsers
                         break;
                     case ')':
                         RecordValueAndCreateLeaf();
+                        // use ??= assignment. currentNode.Parent ??= new Composite();
                         if (currentNode.Parent == null) currentNode.Parent = new Composite();
                         currentNode = currentNode.Parent;
                         break;
@@ -47,11 +50,12 @@ namespace NETLab4.Parsers
                         currentNode.Connector = new Connect(s);
                         break;
                     default:
-                        partRecording = true; // ??? чи делегат чи подія
+                        partRecording = true; // ??? чи делегат чи подія. you can leave it as flag
                         partValue += s;
                         break;
                 }
             }
+            // string
             if (!String.IsNullOrEmpty(partValue))
                 RecordValueAndCreateLeaf();
 
@@ -59,12 +63,17 @@ namespace NETLab4.Parsers
         }
         private void RecordValueAndCreateLeaf()
         {
+            //condition should be reversed - if(!partRecording) {return;} to remove extra brackets below
             if (partRecording)
             {
                 if (currentNode == null || partValue == null)
                     throw new ArgumentNullException("Recording was not run or current node was not selected");
+
+                //same brackets {}
                 if (currentNode.Left == null)
                     currentNode.Left = new Leaf(PartRecord(partValue));
+
+                //same brackets {}
                 else
                     currentNode.Right = new Leaf(PartRecord(partValue));
                 partValue = string.Empty;
@@ -73,8 +82,13 @@ namespace NETLab4.Parsers
         }
         private SimpleExpression PartRecord(string rawPart)
         {
+            //same brackets {} and out var num
             if (double.TryParse(rawPart, out double num)) return new Number(num);
+
+            // else is redundant, because there is return after each if. same brackets {} and out var result
             else if (Variable.TryParse(rawPart, out Variable? result)) return result;
+
+            // else is redundant, because there is return after each if. same brackets {}
             else throw new InvalidDataException();
         }
     }
