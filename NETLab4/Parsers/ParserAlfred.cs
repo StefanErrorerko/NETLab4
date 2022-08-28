@@ -8,7 +8,7 @@ namespace NETLab4.Parsers
         bool partRecording; //_partRecording and make all this fields private explicitly
         Component? currentNode; //_currentNode - '_' part is a code style convention https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
         string partValue = string.Empty; //same
-        Component? lastNode; // same and Component var doesn't need '?' because Component is a class, so it is reference type, so it is already nullable
+        Component? lastNode; 
         public override Component Parse(string exp)
         {
             // root var not needed, it could already be currentNode = new Composite();
@@ -56,7 +56,7 @@ namespace NETLab4.Parsers
                 }
             }
             // string
-            if (!String.IsNullOrEmpty(partValue))
+            if (!string.IsNullOrEmpty(partValue))
                 RecordValueAndCreateLeaf();
 
             return currentNode;
@@ -64,21 +64,24 @@ namespace NETLab4.Parsers
         private void RecordValueAndCreateLeaf()
         {
             //condition should be reversed - if(!partRecording) {return;} to remove extra brackets below
-            if (partRecording)
-            {
-                if (currentNode == null || partValue == null)
-                    throw new ArgumentNullException("Recording was not run or current node was not selected");
-
-                //same brackets {}
-                if (currentNode.Left == null)
-                    currentNode.Left = new Leaf(PartRecord(partValue));
-
-                //same brackets {}
-                else
-                    currentNode.Right = new Leaf(PartRecord(partValue));
-                partValue = string.Empty;
-                partRecording = false;
+            if (!partRecording)
+            { 
+                return;
             }
+            if (currentNode == null || partValue == null)
+            {
+                throw new ArgumentNullException("Recording was not run or current node was not selected");
+            }
+
+            //same brackets {}
+            if (currentNode.Left == null)
+                currentNode.Left = new Leaf(PartRecord(partValue));
+
+            //same brackets {}
+            else
+                currentNode.Right = new Leaf(PartRecord(partValue));
+            partValue = string.Empty;
+            partRecording = false;
         }
         private SimpleExpression PartRecord(string rawPart)
         {
@@ -86,10 +89,10 @@ namespace NETLab4.Parsers
             if (double.TryParse(rawPart, out double num)) return new Number(num);
 
             // else is redundant, because there is return after each if. same brackets {} and out var result
-            else if (Variable.TryParse(rawPart, out Variable? result)) return result;
+            if (Variable.TryParse(rawPart, out Variable? result)) return result;
 
             // else is redundant, because there is return after each if. same brackets {}
-            else throw new InvalidDataException();
+            throw new InvalidDataException();
         }
     }
 }
