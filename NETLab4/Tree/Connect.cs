@@ -2,8 +2,7 @@ namespace NETLab4.Tree
 {
     public class Connect
     {
-        // better to rename it to just _symbols. And use HashSet<> instead of List<> - _symbols = new HashSet<char> {'+', '-', '*', '/'};
-        private static readonly List<char> _symbolCollection = new List<char>
+        private static readonly HashSet<char> _symbols = new HashSet<char>
         {
             '+', '-', '*', '/'
         };
@@ -12,10 +11,9 @@ namespace NETLab4.Tree
 
         public Connect(char sym)
         {
-            // with HashSet<> it would be just - if(_symbols.Contains(sym)) without foreach
-            foreach(char s in _symbolCollection)
+            if (_symbols.Contains(sym))
             {
-                if (s == sym) Symbol = sym;
+                Symbol = sym;
             }
         }
         public override string ToString() => Convert.ToString(Symbol);

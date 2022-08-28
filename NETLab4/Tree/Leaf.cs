@@ -12,8 +12,7 @@ namespace NETLab4.Tree
 
         public override string ToString()
         {
-            // use conditional access - return Value?.ToString() ?? string.Empty()
-            return Value != null ? Value.ToString() : String.Empty;
+            return Value?.ToString() ?? string.Empty;
         }
     }
 }

@@ -16,11 +16,15 @@ namespace NETLab4.Tree
         public override string ToString()
         {
             string result = "(";
-            if(Left != null) //same brackets {}
+            if (Left != null)
+            {
                 result += Left.ToString();
+            }
             result += Connector;
-            if(Right != null) //same brackets {}
+            if (Right != null)
+            {
                 result += Right.ToString();
+            }
             return result + ")";
         }
     }

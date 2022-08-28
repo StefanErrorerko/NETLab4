@@ -5,41 +5,38 @@ namespace NETLab4.Parsers
 {
     public class ParserAlfred : IParser
     {
-        bool partRecording; //_partRecording and make all this fields private explicitly
-        Component? currentNode; //_currentNode - '_' part is a code style convention https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
-        string partValue = string.Empty; //same
-        Component? lastNode; 
+        private bool partRecording;
+        private Component? _currentNode;
+        private string _partValue = string.Empty;
+        private Component? _lastNode;             
+
         public override Component Parse(string exp)
         {
-            // root var not needed, it could already be currentNode = new Composite();
-            var root = new Composite();
-            currentNode = root;
-            partRecording = false; //this flag actually should not be private var, it should be local var here in Parse() method and be a parameter in RecordValueAndCreateLeaf() method
+            partRecording = false;
+            _currentNode = new Composite();
 
-            //var s, and you should avoid var naming in one letter (is it symbol?)
-            foreach (char s in exp)
+            foreach (var sym in exp)
             {
-                switch (s)
+                switch (sym)
                 {
                     case '(':
-                        lastNode = currentNode;
-                        if (currentNode.Left == null)
+                        _lastNode = _currentNode;
+                        if (_currentNode.Left == null)
                         {
-                            currentNode.Left = new Composite();
-                            currentNode = currentNode.Left;
+                            _currentNode.Left = new Composite();
+                            _currentNode = _currentNode.Left;
                         }
                         else
                         {
-                            currentNode.Right = new Composite();
-                            currentNode = currentNode.Right;
+                            _currentNode.Right = new Composite();
+                            _currentNode = _currentNode.Right;
                         }
-                        currentNode.Parent = lastNode;
+                        _currentNode.Parent = _lastNode;
                         break;
                     case ')':
                         RecordValueAndCreateLeaf();
-                        // use ??= assignment. currentNode.Parent ??= new Composite();
-                        if (currentNode.Parent == null) currentNode.Parent = new Composite();
-                        currentNode = currentNode.Parent;
+                        _currentNode.Parent ??= new Composite();
+                        _currentNode = _currentNode.Parent;
                         break;
                     case '*':
                     case '/':
@@ -47,51 +44,53 @@ namespace NETLab4.Parsers
                     case '-':
                         if (partRecording)
                             RecordValueAndCreateLeaf();
-                        currentNode.Connector = new Connect(s);
+                        _currentNode.Connector = new Connect(sym);
                         break;
                     default:
-                        partRecording = true; // ??? чи делегат чи подія. you can leave it as flag
-                        partValue += s;
+                        partRecording = true; 
+                        _partValue += sym;
                         break;
                 }
             }
-            // string
-            if (!string.IsNullOrEmpty(partValue))
+            if (!string.IsNullOrEmpty(_partValue))
                 RecordValueAndCreateLeaf();
 
-            return currentNode;
+            return _currentNode;
         }
         private void RecordValueAndCreateLeaf()
         {
-            //condition should be reversed - if(!partRecording) {return;} to remove extra brackets below
             if (!partRecording)
             { 
                 return;
             }
-            if (currentNode == null || partValue == null)
+
+            if (_currentNode == null || _partValue == null)
             {
                 throw new ArgumentNullException("Recording was not run or current node was not selected");
             }
 
-            //same brackets {}
-            if (currentNode.Left == null)
-                currentNode.Left = new Leaf(PartRecord(partValue));
+            if (_currentNode.Left == null)
+            {
+                _currentNode.Left = new Leaf(PartRecord(_partValue));
+            }
 
-            //same brackets {}
             else
-                currentNode.Right = new Leaf(PartRecord(partValue));
-            partValue = string.Empty;
+            {
+                _currentNode.Right = new Leaf(PartRecord(_partValue));
+            }
+            _partValue = string.Empty;
             partRecording = false;
         }
         private SimpleExpression PartRecord(string rawPart)
         {
-            //same brackets {} and out var num
-            if (double.TryParse(rawPart, out double num)) return new Number(num);
-
-            // else is redundant, because there is return after each if. same brackets {} and out var result
-            if (Variable.TryParse(rawPart, out Variable? result)) return result;
-
-            // else is redundant, because there is return after each if. same brackets {}
+            if (double.TryParse(rawPart, out var num))
+            {
+                return new Number(num);
+            }
+            if (Variable.TryParse(rawPart, out var result))
+            {
+                return result;
+            }
             throw new InvalidDataException();
         }
     }

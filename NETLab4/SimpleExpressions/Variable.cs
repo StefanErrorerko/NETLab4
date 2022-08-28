@@ -20,9 +20,14 @@ namespace NETLab4.SimpleExpressions
 
         public static bool TryParse([NotNullWhen(true)] string? str, [NotNullWhen(true)] out Variable? result)
         {
-            if (str != null && Regex.IsMatch(str, @"^[A-z,a-z]+$")) //same brackets {}
+            if (str != null && Regex.IsMatch(str, @"^[A-z,a-z]+$")) 
+            {
                 result = new Variable(str);
-            else result = null; //same brackets {}
+            }
+            else
+            {
+                result = null;
+            } 
             return result is not null;
         }
         public override string ToString() => Convert.ToString(Name);
