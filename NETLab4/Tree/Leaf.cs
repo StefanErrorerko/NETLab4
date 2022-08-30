@@ -4,7 +4,7 @@ namespace NETLab4.Tree
 {
     public class Leaf : Component
     {
-        public override SimpleExpression Value { get; set; }
+        public override SimpleExpression? Value { get; set; }
         public Leaf(SimpleExpression value)
         {
             Value = value;

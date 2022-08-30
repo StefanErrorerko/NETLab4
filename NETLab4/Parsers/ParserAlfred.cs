@@ -5,14 +5,14 @@ namespace NETLab4.Parsers
 {
     public class ParserAlfred : IParser
     {
-        private bool partRecording;
+        private bool _partRecording;
         private Component? _currentNode;
         private string _partValue = string.Empty;
         private Component? _lastNode;             
 
         public override Component Parse(string exp)
         {
-            partRecording = false;
+            _partRecording = false;
             _currentNode = new Composite();
 
             foreach (var sym in exp)
@@ -42,12 +42,12 @@ namespace NETLab4.Parsers
                     case '/':
                     case '+':
                     case '-':
-                        if (partRecording)
+                        if (_partRecording)
                             RecordValueAndCreateLeaf();
                         _currentNode.Connector = new Connect(sym);
                         break;
                     default:
-                        partRecording = true; 
+                        _partRecording = true; 
                         _partValue += sym;
                         break;
                 }
@@ -59,7 +59,7 @@ namespace NETLab4.Parsers
         }
         private void RecordValueAndCreateLeaf()
         {
-            if (!partRecording)
+            if (!_partRecording)
             { 
                 return;
             }
@@ -79,7 +79,7 @@ namespace NETLab4.Parsers
                 _currentNode.Right = new Leaf(PartRecord(_partValue));
             }
             _partValue = string.Empty;
-            partRecording = false;
+            _partRecording = false;
         }
         private SimpleExpression PartRecord(string rawPart)
         {
