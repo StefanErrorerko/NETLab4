@@ -18,18 +18,6 @@ Implement a parse tree for an expression, based on the following syntax rules:
 ```
 
 ## Explanation
-
-Here’s the English translation of your text:
-
-# NETLab4
-
-Lab 4 | Design Patterns (Structural) | Composite
-
-Muzyka Stefan
-IC-02
-Variant 11
-
-## Explanation
 The Composite pattern is implemented through the classes Component, Composite, and Leaf. They represent a tree-like structure of an expression.
 
 - Component is an abstract class that describes a part of the expression (either complex or simple).
