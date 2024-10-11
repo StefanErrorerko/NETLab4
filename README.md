@@ -8,12 +8,14 @@ Variant 11
 
 ## Task
 Implement a parse tree for an expression, based on the following syntax rules:
+```
 <expression> ::= <simple expression> | <complex expression>
 <simple expression> ::= <constant> | <variable>
 <constant> ::= (<number>)
 <variable> ::= (<name>)
 <complex expression> ::= (<expression> <operator> <expression>)
 <operator> ::= + | - | * | /
+```
 
 ## Explanation
 
